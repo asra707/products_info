@@ -1,5 +1,44 @@
 *{
     margin: 0px;
     padding: 0px;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    box-sizing: border-box; 
 }
+
+.text{
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-family:Georgia, 'Times New Roman', Times, serif
+}
+
+#sections {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.section {
+    width: 23%;
+    text-align: center;
+    box-shadow: 0 0 4px 3px rgb(100, 131, 100);
+    padding: 1.5em;
+    margin-bottom: 2em;
+}
+
+.images {
+    width: 80%;
+    margin-bottom: 1em;
+}
+
+.title {
+    font-size: 1.3rem;
+}
+
+.category,
+.price{
+    font-weight: bold;
+    text-transform: capitalize;
+    margin: 0.5em 0;
+    font-size: 1.2rem;
+}
+
