@@ -45,3 +45,17 @@
     font-size: 1.2rem;
 }
 
+.product-details{
+    display: grid;
+    grid-template-rows: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust minimum and maximum width */
+    gap: 10px;
+}
+
+.gallery {
+    max-width: 40%;
+    width: 40%;
+    height: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+

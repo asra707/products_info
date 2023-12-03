@@ -1,29 +1,84 @@
+const search = document.getElementById('search');
+const cat = document.getElementById('category');
+
 fetch('https://dummyjson.com/products')
 .then((data) => {
     return data.json();
 })
 .then((jsonData) => {
-    //check
     //console.log(jsonData);
-
-    // Assuming it contains the JSON object provided
-
     const productList = jsonData.products;
 
-    let data1= "";
+    show(productList);
 
-    productList.forEach(product => {
-        data1 += `<div class="section" data-product-id="${product.id}">
-          <img src="${product.thumbnail}" alt="Product Image" class="images">
-          <h3 class="title">${product.title}</h3>
-          <p class="category">${product.category}</p>
-          <p class="price">$${product.price}</p>
-          <p class="discount">Discount: ${product.discountPercentage}%</p>
-          <p class="sock">Stock: ${product.stock}</p>
-        </div>`;
+    cat.addEventListener('change', function() {
 
-        
-    }); 
+
+
+    });
+
+
+    fetch('https://dummyjson.com/products/categories')
+      .then(res => res.json())
+      .then(categories => {
+            const all = document.createElement('option');
+            all.value = 'All categories';
+            all.textContent = 'All categories';
+            cat.appendChild(all);
+
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.toLowerCase();
+                option.textContent = category;
+                cat.appendChild(option);
+            });
+        })
+      .catch(error => {
+        console.log('Error fetching categories:', error);
+      });
+
+    //category
+    cat.addEventListener('change', function() {
+        const select = this.value.toLowerCase();
+        let filter = [];
+
+        if (select === 'all categories'){
+            filter = productList;
+        } else {
+            filter = productList.filter(product => {
+                return product.category.toLowerCase() === select;      
+            });
+        }   
+
+        show(filter)
+    });
+
+    //search 
+    document.getElementById('search').addEventListener('input', function() {
+        const key = this.value.toLowerCase();
+        const filter=productList.filter(product => {
+            return (
+                product.title.toLowerCase().includes(key) ||
+                product.description.toLowerCase().includes(key) ||
+                product.category.toLowerCase().includes(key)
+            );
+        });
+        show(filter)
+    });
+
+    function show(products) {
+        let data1 = "";
+        products.forEach(product => {
+            data1 += `<div class="section" data-product-id="${product.id}">
+                <img src="${product.thumbnail}" alt="Product Image" class="images">
+                <h3 class="title">${product.title}</h3>
+                <p class="category">${product.category}</p>
+                <p class="price">$${product.price}</p>
+                <p class="discount">Discount: ${product.discountPercentage}%</p>
+                <p class="sock">Stock: ${product.stock}</p>
+            </div>`;
+
+        });
 
     document.getElementById("sections").innerHTML = data1;
 
@@ -31,15 +86,16 @@ fetch('https://dummyjson.com/products')
     productSections.forEach(section => {
         section.addEventListener('click', () => {
             const productId = section.getAttribute('data-product-id');
-            const clickedProduct = productList.find(product => product.id === parseInt(productId));
+            const clicked = productList.find(product => product.id === parseInt(productId));
 
-            openProductIndoPage(clickedProduct);
+            openProductIndoPage(clicked);
         
         });
     });
+}
 
     function openProductIndoPage(product) {
-        const images = product.images.map(imgUrl => `<img src="${imgUrl}" alt="gallery" class="images">`).join('');
+        const images = product.images.map(imgUrl => `<img src="${imgUrl}" alt="gallery" class="gallery">`).join('');
 
         const productInfoPage = `
         <!DOCTYPE html>
@@ -63,19 +119,15 @@ fetch('https://dummyjson.com/products')
             </div>
 
         </body>
-        
+
         </html>
       `;
-
-        // <p>Images: ${product.images.join('')}</p>
 
         const productWindow = window.open('', '_blank');
         productWindow.document.write(productInfoPage);
         productWindow.document.close();
 
-
     }
-
 
 })
 .catch((error) => {
