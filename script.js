@@ -11,12 +11,6 @@ fetch('https://dummyjson.com/products')
 
     show(productList);
 
-    cat.addEventListener('change', function() {
-
-
-
-    });
-
 
     fetch('https://dummyjson.com/products/categories')
       .then(res => res.json())
